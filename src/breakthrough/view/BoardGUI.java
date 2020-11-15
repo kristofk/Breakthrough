@@ -1,7 +1,6 @@
 package breakthrough.view;
 
 import breakthrough.model.Board;
-import breakthrough.model.Cell;
 
 import javax.swing.*;
 import java.awt.*;

@@ -25,6 +25,7 @@ public class BreakthroughGUI {
 
     JFrame window = new GameWindow();
     BoardGUI boardGUI = new BoardGUI(board);
+    GameMenu menu = new GameMenu();
     JButton[][] buttons;
 
     // =================================================================================================================
@@ -33,30 +34,22 @@ public class BreakthroughGUI {
 
     public BreakthroughGUI() {
         window.add(boardGUI);
+        window.setJMenuBar(menu);
+        connectNewMenuItems();
 
-        initializeMenu();
-//        initializeButtons();
         window.pack();
     }
 
-    private void initializeMenu() {
-        GameMenu menuBar = new GameMenu();
-        window.setJMenuBar(menuBar);
-        int[] boardSizes = new int[]{6, 8, 10};
-        for (int boardSize: boardSizes) {
-            menuBar.getNewMenu().add(newBoardSizeMenuItem(boardSize));
+    private void connectNewMenuItems() {
+        NewMenuItem[] items = menu.getNewMenuItems();
+        for (NewMenuItem item : items) {
+            item.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    newGame(item.getBoardSize());
+                }
+            });
         }
-    }
-
-    JMenuItem newBoardSizeMenuItem(int size) {
-        JMenuItem sizeMenuItem = new JMenuItem(size + "x" + size);
-        sizeMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                newGame(size);
-            }
-        });
-        return sizeMenuItem;
     }
 
     // =================================================================================================================
