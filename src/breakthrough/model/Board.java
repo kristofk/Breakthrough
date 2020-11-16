@@ -79,6 +79,10 @@ public class Board {
     // todo: implement
     private void move(Point source, Point destination) {
         System.out.println(source + " -> " + destination);
+        Cell sourceCell = cells[source.x][source.y];
+        Cell destinationCell = cells[destination.x][destination.y];
+        destinationCell.setOccupancy(sourceCell.getOccupancy());
+        sourceCell.setOccupancy(CellOccupancy.empty);
     }
 
     private void clearSelection() {
@@ -114,6 +118,7 @@ public class Board {
                 setState(BoardState.xSelectDestination);
                 return;
             case oSelectSource:
+                selectedCell = cells[row][column];
                 selectedCell.setCurrentState(CellState.selectedSource);
                 setState(BoardState.oSelectDestination);
                 return;
