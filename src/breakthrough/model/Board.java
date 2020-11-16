@@ -128,6 +128,8 @@ public class Board {
                         sourceCellRow + 1 :
                         sourceCellRow;
 
+        if (row < 0 || size <= row) return possibleDestinations;
+
         int columnLowerBound = sourceCellColumn - 1;
         int columnUpperBound = sourceCellColumn + 1;
 
