@@ -5,17 +5,23 @@ import breakthrough.model.CellState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class CellGUI extends JButton {
+public class CellGUI extends JButton implements PropertyChangeListener {
 
     private Cell model;
 
     public CellGUI(Cell cell) {
         super();
+
         model = cell;
+        model.addPropertyChangeListener(this);
+
         Dimension size = new Dimension(50, 50);
         setPreferredSize(size);
         setOpaque(true);
+
         draw();
     }
 
@@ -39,7 +45,8 @@ public class CellGUI extends JButton {
         }
     }
 
-    public Cell getmodel() {
-        return model;
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        draw();
     }
 }

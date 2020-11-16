@@ -79,8 +79,6 @@ public class BreakthroughGUI {
         window.add(boardGUI);
         connectCellButtons();
         window.pack();
-
-
     }
 
     private void clearGUI() {
@@ -103,7 +101,6 @@ public class BreakthroughGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
             board.cellSelectedAt(x, y);
-            boardGUI.refresh();
         }
     }
 

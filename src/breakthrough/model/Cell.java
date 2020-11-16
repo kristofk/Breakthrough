@@ -1,9 +1,12 @@
 package breakthrough.model;
 
 import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class Cell {
 
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
     private CellOccupancy occupancy;
     private Point coords;
     private CellState currentState;
@@ -54,7 +57,9 @@ public class Cell {
     }
 
     public void setOccupancy(CellOccupancy occupancy) {
+        CellOccupancy oldValue = this.occupancy;
         this.occupancy = occupancy;
+        changes.firePropertyChange("occupancy", oldValue, occupancy);
     }
 
     public CellState getCurrentState() {
@@ -62,9 +67,12 @@ public class Cell {
     }
 
     public void setCurrentState(CellState currentState) {
+        CellState oldValue = this.currentState;
         this.currentState = currentState;
+        changes.firePropertyChange("currentState", oldValue, currentState);
     }
-// =================================================================================================================
+
+    // =================================================================================================================
     // Overrides
     // =================================================================================================================
 
@@ -80,5 +88,17 @@ public class Cell {
             default:
                 return "E";
         }
+    }
+
+    // =================================================================================================================
+    // Property listeners
+    // =================================================================================================================
+
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        changes.addPropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        changes.removePropertyChangeListener(l);
     }
 }

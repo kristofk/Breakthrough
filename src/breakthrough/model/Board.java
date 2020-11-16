@@ -48,6 +48,7 @@ public class Board {
     private void enablePossibleXSources() {
         for (Cell[] row : cells) {
             for (Cell cell : row) {
+                if (possibleDestinationsFor(cell).size() == 0) continue;
                 if (cell.getOccupancy() == CellOccupancy.x) cell.setCurrentState(CellState.enabled);
                 else cell.setCurrentState(CellState.disabled);
             }
@@ -77,6 +78,7 @@ public class Board {
         // todo
         for (Cell[] row : cells) {
             for (Cell cell : row) {
+                if (possibleDestinationsFor(cell).size() == 0) continue;
                 if (cell.getOccupancy() == CellOccupancy.o) cell.setCurrentState(CellState.enabled);
                 else cell.setCurrentState(CellState.disabled);
             }
