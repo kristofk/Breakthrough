@@ -36,7 +36,6 @@ public class BreakthroughGUI implements PropertyChangeListener {
         window.setJMenuBar(menu);
         connectNewMenuItems();
         newGame(defaultBoardSize);
-        board.addPropertyChangeListener(this);
 
         window.pack();
     }
@@ -73,6 +72,7 @@ public class BreakthroughGUI implements PropertyChangeListener {
         window.add(boardGUI);
         connectCellButtons();
         window.pack();
+        board.addPropertyChangeListener(this);
     }
 
     private void clearGUI() {
@@ -82,6 +82,7 @@ public class BreakthroughGUI implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("STARTING NEW GAME");
+        board.removePropertyChangeListener(this);
         newGame(defaultBoardSize);
     }
 

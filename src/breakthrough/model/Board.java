@@ -78,7 +78,6 @@ public class Board {
     }
 
     private void move(Point source, Point destination) {
-        System.out.println(source + " -> " + destination);
         Cell sourceCell = cells[source.x][source.y];
         Cell destinationCell = cells[destination.x][destination.y];
         destinationCell.setOccupancy(sourceCell.getOccupancy());
@@ -155,12 +154,13 @@ public class Board {
     }
 
     private void checkGameOver() {
-        boolean didXWin = didXWin();
-        boolean didOWin = didOWin();
-        if (!(didXWin || didOWin)) return;
-        System.out.println("GAME OVER!");
-        JOptionPane.showMessageDialog(null, "hello");
-        setGameOver(true);
+        if (didXWin()) {
+            JOptionPane.showMessageDialog(null, "X won!");
+            setGameOver(true);
+        } else if (didOWin()) {
+            JOptionPane.showMessageDialog(null, "O won!");
+            setGameOver(true);
+        }
     }
 
     private boolean didXWin() {
