@@ -3,6 +3,7 @@ package breakthrough.model;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Board {
 
@@ -55,14 +56,20 @@ public class Board {
 
     // todo: Only possible destinations from selected cell.
     private void enablePossibleDestinations() {
-        for (Cell[] row : cells) {
-            for (Cell cell : row) {
-                CellOccupancy occupancy = cell.getOccupancy();
-                CellState state = cell.getCurrentState();
-                if (state == CellState.selectedSource) continue;
-                if (occupancy == CellOccupancy.empty) cell.setCurrentState(CellState.enabled);
-                else cell.setCurrentState(CellState.disabled);
-            }
+        System.out.println("enablePossibleDestinations");
+//        for (Cell[] row : cells) {
+//            for (Cell cell : row) {
+//                CellOccupancy occupancy = cell.getOccupancy();
+//                CellState state = cell.getCurrentState();
+//                if (state == CellState.selectedSource) continue;
+//                if (occupancy == CellOccupancy.empty) cell.setCurrentState(CellState.enabled);
+//                else cell.setCurrentState(CellState.disabled);
+//            }
+//        }
+        disableAll(false);
+        ArrayList<Cell> possibleDestinations = possibleDestinationsFor(selectedCell);
+        for (Cell cell : possibleDestinations) {
+            cell.setCurrentState(CellState.enabled);
         }
     }
 
@@ -88,6 +95,41 @@ public class Board {
     private void clearSelection() {
         selectedCell.setCurrentState(CellState.disabled);
         selectedCell = null;
+    }
+
+    public ArrayList<Cell> possibleDestinationsFor(Cell sourceCell) {
+        ArrayList<Cell> possibleDestinations = new ArrayList<>();
+
+        Point sourceCellCoords = sourceCell.getCoords();
+        int sourceCellRow = sourceCellCoords.x;
+        int sourceCellColumn = sourceCellCoords.y;
+        CellOccupancy sourceCellOccupancy = sourceCell.getOccupancy();
+
+        int row = (sourceCellOccupancy == CellOccupancy.x) ? sourceCellRow - 1 : sourceCellRow + 1;
+        int columnLowerBound = sourceCellColumn - 1;
+        int columnUpperBound = sourceCellColumn + 1;
+
+        for (Cell cell : cells[row]) {
+            if (cell.getOccupancy() == sourceCell.getOccupancy()) continue;
+            int cellColumn = cell.getCoords().y;
+            if (columnLowerBound <= cellColumn && cellColumn <= columnUpperBound) {
+                possibleDestinations.add(cell);
+            }
+        }
+
+        return possibleDestinations;
+    }
+
+    private void disableAll(boolean disableSelected) {
+        for (Cell[] row : cells) {
+            for (Cell cell : row) {
+                if (cell.getCurrentState() == CellState.selectedSource) {
+                    if (disableSelected) cell.setCurrentState(CellState.disabled);
+                } else {
+                    cell.setCurrentState(CellState.disabled);
+                }
+            }
+        }
     }
 
     // =================================================================================================================

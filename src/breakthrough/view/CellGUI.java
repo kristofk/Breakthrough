@@ -38,4 +38,8 @@ public class CellGUI extends JButton {
                 return;
         }
     }
+
+    public Cell getmodel() {
+        return model;
+    }
 }

@@ -28,7 +28,6 @@ public class BreakthroughGUI {
     JFrame window = new GameWindow();
     BoardGUI boardGUI = new BoardGUI(board);
     GameMenu menu = new GameMenu();
-    JButton[][] buttons;
 
     // =================================================================================================================
     // Initializers
@@ -39,8 +38,13 @@ public class BreakthroughGUI {
         connectNewMenuItems();
         newGame(defaultBoardSize);
 
-        window.pack();
+//        System.out.println(boardGUI.getButtons()[0][0].getmodel().getCoords());
+//        System.out.println(boardGUI.getButtons()[5][5].getmodel().getCoords());
+//        System.out.println(board.getCells()[0][0].getCoords());
+//        System.out.println(board.getCells()[5][5].getCoords());
+        System.out.println(board.possibleDestinationsFor(board.getCells()[4][3]));
 
+        window.pack();
     }
 
     private void connectNewMenuItems() {
