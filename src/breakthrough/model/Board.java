@@ -145,11 +145,11 @@ public class Board {
             if (cell.getOccupancy() == sourceCellOccupancy) continue;
 
             int cellColumn = cell.getCoords().y;
-            if (columnLowerBound > cellColumn && cellColumn > columnUpperBound) continue;
+            if (!(columnLowerBound <= cellColumn && cellColumn <= columnUpperBound)) continue;
             if (cellColumn == sourceCellColumn && cell.getOccupancy() != CellOccupancy.empty) continue;
             possibleDestinations.add(cell);
         }
-
+        System.out.println(possibleDestinations);
         return possibleDestinations;
     }
 
@@ -220,6 +220,7 @@ public class Board {
             case oSelectDestination:
                 move(selectedCell.getCoords(), new Point(row, column));
                 setState(BoardState.xSelectSource);
+                clearSelection();
                 break;
         }
 
