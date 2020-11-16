@@ -1,7 +1,5 @@
 package breakthrough.model;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -57,15 +55,6 @@ public class Board {
 
     // todo: Only possible destinations from selected cell.
     private void enablePossibleDestinations() {
-//        for (Cell[] row : cells) {
-//            for (Cell cell : row) {
-//                CellOccupancy occupancy = cell.getOccupancy();
-//                CellState state = cell.getCurrentState();
-//                if (state == CellState.selectedSource) continue;
-//                if (occupancy == CellOccupancy.empty) cell.setCurrentState(CellState.enabled);
-//                else cell.setCurrentState(CellState.disabled);
-//            }
-//        }
         disableAll(false);
         ArrayList<Cell> possibleDestinations = possibleDestinationsFor(selectedCell);
         for (Cell cell : possibleDestinations) {
@@ -74,7 +63,6 @@ public class Board {
     }
 
     private void enablePossibleOSources() {
-        // todo
         for (Cell[] row : cells) {
             for (Cell cell : row) {
                 if (possibleDestinationsFor(cell).size() == 0) continue;
@@ -84,7 +72,6 @@ public class Board {
         }
     }
 
-    // todo: implement
     private void move(Point source, Point destination) {
         System.out.println(source + " -> " + destination);
         Cell sourceCell = cells[source.x][source.y];
@@ -112,17 +99,16 @@ public class Board {
                         sourceCellRow + 1 :
                         sourceCellRow;
 
-        System.out.println("sourceCell: " + sourceCell.getCoords().toString());
-        System.out.println("row: " + row);
         int columnLowerBound = sourceCellColumn - 1;
         int columnUpperBound = sourceCellColumn + 1;
 
         for (Cell cell : cells[row]) {
-            if (cell.getOccupancy() == sourceCell.getOccupancy()) continue;
+            if (cell.getOccupancy() == sourceCellOccupancy) continue;
+
             int cellColumn = cell.getCoords().y;
-            if (columnLowerBound <= cellColumn && cellColumn <= columnUpperBound) {
-                possibleDestinations.add(cell);
-            }
+            if (columnLowerBound > cellColumn && cellColumn > columnUpperBound) continue;
+            if (cellColumn == sourceCellColumn && cell.getOccupancy() != CellOccupancy.empty) continue;
+            possibleDestinations.add(cell);
         }
 
         return possibleDestinations;
@@ -178,7 +164,7 @@ public class Board {
                 clearSelection();
                 return;
             case oSelectDestination:
-                move(selectedCell.getCoords(), new Point(row,column));
+                move(selectedCell.getCoords(), new Point(row, column));
                 setState(BoardState.xSelectSource);
                 return;
         }

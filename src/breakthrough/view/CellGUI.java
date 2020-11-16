@@ -1,7 +1,6 @@
 package breakthrough.view;
 
 import breakthrough.model.Cell;
-import breakthrough.model.CellState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +36,6 @@ public class CellGUI extends JButton implements PropertyChangeListener {
                 setBackground(null);
                 return;
             case selectedSource:
-                System.out.println("setting a selected cell");
                 setEnabled(false);
                 setBackground(Color.BLUE);
                 setOpaque(true);

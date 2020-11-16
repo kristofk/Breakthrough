@@ -23,18 +23,6 @@ public class GameMenu extends JMenuBar {
         }
     }
 
-    // =================================================================================================================
-    // Getters and Setters
-    // =================================================================================================================
-
-    public JMenu getGameMenu() {
-        return gameMenu;
-    }
-
-    public JMenu getNewMenu() {
-        return newMenu;
-    }
-
     public NewMenuItem[] getNewMenuItems() {
         return newMenuItems;
     }

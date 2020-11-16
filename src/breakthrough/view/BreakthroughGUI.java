@@ -2,13 +2,10 @@ package breakthrough.view;
 
 import breakthrough.model.Board;
 import breakthrough.model.BoardState;
-import breakthrough.model.CellState;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Console;
 
 public class BreakthroughGUI {
 
@@ -37,11 +34,6 @@ public class BreakthroughGUI {
         window.setJMenuBar(menu);
         connectNewMenuItems();
         newGame(defaultBoardSize);
-
-//        System.out.println(boardGUI.getButtons()[0][0].getmodel().getCoords());
-//        System.out.println(boardGUI.getButtons()[5][5].getmodel().getCoords());
-//        System.out.println(board.getCells()[0][0].getCoords());
-//        System.out.println(board.getCells()[5][5].getCoords());
         System.out.println(board.possibleDestinationsFor(board.getCells()[4][3]));
 
         window.pack();
