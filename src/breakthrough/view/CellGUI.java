@@ -37,7 +37,7 @@ public class CellGUI extends JButton implements PropertyChangeListener {
                 return;
             case selectedSource:
                 setEnabled(false);
-                setBackground(Color.BLUE);
+                setBackground(Color.lightGray);
                 setOpaque(true);
                 return;
         }

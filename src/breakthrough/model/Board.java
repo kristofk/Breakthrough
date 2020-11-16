@@ -149,7 +149,6 @@ public class Board {
             if (cellColumn == sourceCellColumn && cell.getOccupancy() != CellOccupancy.empty) continue;
             possibleDestinations.add(cell);
         }
-        System.out.println(possibleDestinations);
         return possibleDestinations;
     }
 

@@ -66,7 +66,7 @@ public class Cell {
     public String toString() {
         switch (occupancy) {
             case empty:
-                return "-";
+                return "";
             case x:
                 return "X";
             case o:
