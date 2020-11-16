@@ -26,44 +26,30 @@ public class Cell {
     }
 
     // =================================================================================================================
-    // Methods
-    // =================================================================================================================
-
-    public boolean canInitiateMove(Player player) {
-        switch (player) {
-            case o:
-                return occupancy == CellOccupancy.o;
-            case x:
-                return occupancy == CellOccupancy.x;
-            default:
-                return false;
-        }
-    }
-
-    // =================================================================================================================
-    // Getters and setters
+    // Getters
     // =================================================================================================================
 
     public Point getCoords() {
         return coords;
     }
 
-    public void setCoords(Point coords) {
-        this.coords = coords;
-    }
-
     public CellOccupancy getOccupancy() {
         return occupancy;
     }
+
+    public CellState getCurrentState() {
+        return currentState;
+    }
+
+    // =================================================================================================================
+    // Setters
+    // These send notifications!
+    // =================================================================================================================
 
     public void setOccupancy(CellOccupancy occupancy) {
         CellOccupancy oldValue = this.occupancy;
         this.occupancy = occupancy;
         changes.firePropertyChange("occupancy", oldValue, occupancy);
-    }
-
-    public CellState getCurrentState() {
-        return currentState;
     }
 
     public void setCurrentState(CellState currentState) {
