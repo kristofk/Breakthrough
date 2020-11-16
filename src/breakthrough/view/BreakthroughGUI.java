@@ -6,8 +6,10 @@ import breakthrough.model.BoardState;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class BreakthroughGUI {
+public class BreakthroughGUI implements PropertyChangeListener {
 
     private final int defaultBoardSize = 6;
 
@@ -34,6 +36,7 @@ public class BreakthroughGUI {
         window.setJMenuBar(menu);
         connectNewMenuItems();
         newGame(defaultBoardSize);
+        board.addPropertyChangeListener(this);
 
         window.pack();
     }
@@ -74,6 +77,12 @@ public class BreakthroughGUI {
 
     private void clearGUI() {
         window.getContentPane().remove(boardGUI);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("STARTING NEW GAME");
+        newGame(defaultBoardSize);
     }
 
     // =================================================================================================================

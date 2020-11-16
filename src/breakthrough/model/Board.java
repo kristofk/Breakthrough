@@ -3,15 +3,19 @@ package breakthrough.model;
 import javax.print.DocFlavor;
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
 
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
     private int size;
     private Cell[][] cells;
     private BoardState state = BoardState.xSelectSource;
     private Cell selectedCell;
+    boolean gameOver = false;
 
     // =================================================================================================================
     // Constructors
@@ -155,7 +159,8 @@ public class Board {
         boolean didOWin = didOWin();
         if (!(didXWin || didOWin)) return;
         System.out.println("GAME OVER!");
-
+        JOptionPane.showMessageDialog(null, "hello");
+        setGameOver(true);
     }
 
     private boolean didXWin() {
@@ -186,6 +191,12 @@ public class Board {
 
     public Cell[][] getCells() {
         return cells;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        boolean oldValue = this.gameOver;
+        this.gameOver = gameOver;
+        changes.firePropertyChange("gameOver", oldValue, gameOver);
     }
 
     public void cellSelectedAt(int row, int column) {
@@ -229,6 +240,18 @@ public class Board {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    // =================================================================================================================
+    // Property listeners
+    // =================================================================================================================
+
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        changes.addPropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        changes.removePropertyChangeListener(l);
     }
 
 }
