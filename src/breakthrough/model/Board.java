@@ -57,7 +57,6 @@ public class Board {
 
     // todo: Only possible destinations from selected cell.
     private void enablePossibleDestinations() {
-        System.out.println("enablePossibleDestinations");
 //        for (Cell[] row : cells) {
 //            for (Cell cell : row) {
 //                CellOccupancy occupancy = cell.getOccupancy();
@@ -107,7 +106,14 @@ public class Board {
         int sourceCellColumn = sourceCellCoords.y;
         CellOccupancy sourceCellOccupancy = sourceCell.getOccupancy();
 
-        int row = (sourceCellOccupancy == CellOccupancy.x) ? sourceCellRow - 1 : sourceCellRow + 1;
+        int row = (sourceCellOccupancy == CellOccupancy.x) ?
+                sourceCellRow - 1 :
+                (sourceCellOccupancy == CellOccupancy.o) ?
+                        sourceCellRow + 1 :
+                        sourceCellRow;
+
+        System.out.println("sourceCell: " + sourceCell.getCoords().toString());
+        System.out.println("row: " + row);
         int columnLowerBound = sourceCellColumn - 1;
         int columnUpperBound = sourceCellColumn + 1;
 
