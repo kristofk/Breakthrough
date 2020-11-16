@@ -1,7 +1,10 @@
 package breakthrough.model;
 
+import javax.print.DocFlavor;
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Board {
 
@@ -99,6 +102,8 @@ public class Board {
     // Methods - Helpers
     // =================================================================================================================
 
+//    JOptionPane.showMessageDialog(null, "hello");
+
     private void setState(BoardState newState) {
         state = newState;
         switch (state) {
@@ -114,7 +119,7 @@ public class Board {
         }
     }
 
-    public ArrayList<Cell> possibleDestinationsFor(Cell sourceCell) {
+    private ArrayList<Cell> possibleDestinationsFor(Cell sourceCell) {
         ArrayList<Cell> possibleDestinations = new ArrayList<>();
 
         Point sourceCellCoords = sourceCell.getCoords();
@@ -145,6 +150,32 @@ public class Board {
         return possibleDestinations;
     }
 
+    private void checkGameOver() {
+        boolean didXWin = didXWin();
+        boolean didOWin = didOWin();
+        if (!(didXWin || didOWin)) return;
+        System.out.println("GAME OVER!");
+
+    }
+
+    private boolean didXWin() {
+        Cell[] topRow = cells[0];
+        for (Cell cell : topRow) {
+            if (cell.getOccupancy() == CellOccupancy.x) return true;
+        }
+
+        return false;
+    }
+
+    private boolean didOWin() {
+        Cell[] topRow = cells[size - 1];
+        for (Cell cell : topRow) {
+            if (cell.getOccupancy() == CellOccupancy.o) return true;
+        }
+
+        return false;
+    }
+
     // =================================================================================================================
     // Getters & setters
     // =================================================================================================================
@@ -164,22 +195,24 @@ public class Board {
                 selectedCell = cells[row][column];
                 selectedCell.setCurrentState(CellState.selectedSource);
                 setState(BoardState.xSelectDestination);
-                return;
+                break;
             case oSelectSource:
                 selectedCell = cells[row][column];
                 selectedCell.setCurrentState(CellState.selectedSource);
                 setState(BoardState.oSelectDestination);
-                return;
+                break;
             case xSelectDestination:
                 move(selectedCell.getCoords(), new Point(row, column));
                 setState(BoardState.oSelectSource);
                 clearSelection();
-                return;
+                break;
             case oSelectDestination:
                 move(selectedCell.getCoords(), new Point(row, column));
                 setState(BoardState.xSelectSource);
-                return;
+                break;
         }
+
+        checkGameOver();
     }
 
     // =================================================================================================================

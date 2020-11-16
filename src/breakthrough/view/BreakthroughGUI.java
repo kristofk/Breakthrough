@@ -12,14 +12,14 @@ public class BreakthroughGUI {
     private final int defaultBoardSize = 6;
 
     // =================================================================================================================
-    // Model properties
+    // Properties - Model
     // =================================================================================================================
 
     Board board = new Board(defaultBoardSize);
     BoardState state = BoardState.xSelectSource;
 
     // =================================================================================================================
-    // View properties
+    // Properties - View
     // =================================================================================================================
 
     JFrame window = new GameWindow();
@@ -34,7 +34,6 @@ public class BreakthroughGUI {
         window.setJMenuBar(menu);
         connectNewMenuItems();
         newGame(defaultBoardSize);
-        System.out.println(board.possibleDestinationsFor(board.getCells()[4][3]));
 
         window.pack();
     }

@@ -11,7 +11,6 @@ public class BoardGUI extends JPanel {
 
     public BoardGUI(Board board) {
         super();
-        System.out.println(board);
         int size = board.getSize();
         buttons = new CellGUI[size][size];
 
