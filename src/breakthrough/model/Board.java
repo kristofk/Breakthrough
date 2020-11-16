@@ -1,5 +1,7 @@
 package breakthrough.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 
 public class Board {
@@ -7,6 +9,7 @@ public class Board {
     private int size;
     private Cell[][] cells;
     BoardState state = BoardState.xSelectSource;
+    Cell selectedCell;
 
     // =================================================================================================================
     // Constructors
@@ -16,7 +19,7 @@ public class Board {
         this.size = size;
         cells = new Cell[size][size];
         loadDefaultSetup();
-        newState(BoardState.xSelectSource);
+        setState(BoardState.xSelectSource);
     }
 
     // =================================================================================================================
@@ -40,25 +43,89 @@ public class Board {
         }
     }
 
-    public void newState(BoardState state) {
-        switch (state) {
-            case xSelectSource:
-                enableOnlyX();
-            case xSelectDestination: return;
-            case oSelectSource: return;
-            case oSelectDestination: return;
+    // todo: Only cells that have possible destinations!
+    private void enablePossibleXSources() {
+        for (Cell[] row : cells) {
+            for (Cell cell : row) {
+                if (cell.getOccupancy() == CellOccupancy.x) cell.setCurrentState(CellState.enabled);
+                else cell.setCurrentState(CellState.disabled);
+            }
         }
     }
 
-    private void enableOnlyX() {
-        for (Cell[] cellRow : cells) {
-            for (Cell cell : cellRow) {
-                if (cell.getOccupancy() == CellOccupancy.x) {
-                    cell.setEnabled(true);
-                } else {
-                    cell.setEnabled(false);
-                }
+    // todo: Only possible destinations from selected cell.
+    private void enablePossibleDestinations() {
+        for (Cell[] row : cells) {
+            for (Cell cell : row) {
+                CellOccupancy occupancy = cell.getOccupancy();
+                CellState state = cell.getCurrentState();
+                if (state == CellState.selectedSource) continue;
+                if (occupancy == CellOccupancy.empty) cell.setCurrentState(CellState.enabled);
+                else cell.setCurrentState(CellState.disabled);
             }
+        }
+    }
+
+    private void enablePossibleOSources() {
+        // todo
+        for (Cell[] row : cells) {
+            for (Cell cell : row) {
+                if (cell.getOccupancy() == CellOccupancy.o) cell.setCurrentState(CellState.enabled);
+                else cell.setCurrentState(CellState.disabled);
+            }
+        }
+    }
+
+    // todo: implement
+    private void move(Point source, Point destination) {
+        System.out.println(source + " -> " + destination);
+    }
+
+    private void clearSelection() {
+        selectedCell.setCurrentState(CellState.disabled);
+        selectedCell = null;
+    }
+
+    // =================================================================================================================
+    // State setters
+    // =================================================================================================================
+
+    private void setState(BoardState newState) {
+        state = newState;
+        switch (state) {
+            case xSelectSource:
+                enablePossibleXSources();
+                return;
+            case oSelectSource:
+                enablePossibleOSources();
+                return;
+            case xSelectDestination, oSelectDestination:
+                enablePossibleDestinations();
+                return;
+        }
+    }
+
+    public void cellSelectedAt(int row, int column) {
+        Cell selection = cells[row][column];
+        switch (state) {
+            case xSelectSource:
+                selectedCell = cells[row][column];
+                selectedCell.setCurrentState(CellState.selectedSource);
+                setState(BoardState.xSelectDestination);
+                return;
+            case oSelectSource:
+                selectedCell.setCurrentState(CellState.selectedSource);
+                setState(BoardState.oSelectDestination);
+                return;
+            case xSelectDestination:
+                move(selectedCell.getCoords(), new Point(row, column));
+                setState(BoardState.oSelectSource);
+                clearSelection();
+                return;
+            case oSelectDestination:
+                move(selectedCell.getCoords(), new Point(row,column));
+                setState(BoardState.xSelectSource);
+                return;
         }
     }
 
@@ -70,16 +137,20 @@ public class Board {
         return size;
     }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
-
     public Cell[][] getCells() {
         return cells;
     }
 
-    public void setCells(Cell[][] cells) {
-        this.cells = cells;
+    public void enableCell(int row, int column) {
+        cells[row][column].setCurrentState(CellState.enabled);
+    }
+
+    public void disableCell(int row, int column) {
+        cells[row][column].setCurrentState(CellState.disabled);
+    }
+
+    public void setCellState(Point coords, CellState newState) {
+        cells[coords.x][coords.y].setCurrentState(newState);
     }
 
     // =================================================================================================================

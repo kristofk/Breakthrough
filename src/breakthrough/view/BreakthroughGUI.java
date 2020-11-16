@@ -2,6 +2,7 @@ package breakthrough.view;
 
 import breakthrough.model.Board;
 import breakthrough.model.BoardState;
+import breakthrough.model.CellState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,7 @@ public class BreakthroughGUI {
         newGame(defaultBoardSize);
 
         window.pack();
+
     }
 
     private void connectNewMenuItems() {
@@ -73,6 +75,8 @@ public class BreakthroughGUI {
         window.add(boardGUI);
         connectCellButtons();
         window.pack();
+
+
     }
 
     private void clearGUI() {
@@ -94,22 +98,8 @@ public class BreakthroughGUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Button " + x + ", " + y);
-//            if (board.get(x, y).getColor() == null) {
-//                Color color = new Color(random.nextInt(256),
-//                        random.nextInt(256), random.nextInt(256));
-//                board.get(x, y).setColor(color);
-//                board.get(x, y).setNumber(++clickNum);
-//                for (int i = 0; i < NUM_COLORED_FIELDS;) {
-//                    Point point = points.remove(points.size()-1);
-//                    if (board.get(point).getColor() == null) {
-//                        board.get(point).setColor(color);
-//                        board.get(point).setNumber(clickNum);
-//                        i++;
-//                    }
-//                }
-//                refresh();
-//            }
+            board.cellSelectedAt(x, y);
+            boardGUI.refresh();
         }
     }
 

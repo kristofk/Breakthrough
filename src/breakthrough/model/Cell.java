@@ -6,20 +6,25 @@ public class Cell {
 
     private CellOccupancy occupancy;
     private Point coords;
-    private boolean enabled;
+    private CellState currentState;
 
+    // =================================================================================================================
     // Constructors
+    // =================================================================================================================
 
     public Cell(CellOccupancy occupancy, Point coords) {
         this.occupancy = occupancy;
         this.coords = coords;
+        this.currentState = CellState.disabled;
     }
 
     public Cell(Point coords) {
         this(CellOccupancy.empty, coords);
     }
 
+    // =================================================================================================================
     // Methods
+    // =================================================================================================================
 
     public boolean canInitiateMove(Player player) {
         switch (player) {
@@ -32,7 +37,9 @@ public class Cell {
         }
     }
 
+    // =================================================================================================================
     // Getters and setters
+    // =================================================================================================================
 
     public Point getCoords() {
         return coords;
@@ -50,15 +57,16 @@ public class Cell {
         this.occupancy = occupancy;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public CellState getCurrentState() {
+        return currentState;
     }
 
-    public void setEnabled(boolean disabled) {
-        this.enabled = disabled;
+    public void setCurrentState(CellState currentState) {
+        this.currentState = currentState;
     }
-
+// =================================================================================================================
     // Overrides
+    // =================================================================================================================
 
     @Override
     public String toString() {

@@ -1,17 +1,41 @@
 package breakthrough.view;
 
 import breakthrough.model.Cell;
+import breakthrough.model.CellState;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CellGUI extends JButton {
 
+    private Cell model;
+
     public CellGUI(Cell cell) {
         super();
+        model = cell;
         Dimension size = new Dimension(50, 50);
         setPreferredSize(size);
-        setText(cell.toString());
-        setEnabled(cell.isEnabled());
+        setOpaque(true);
+        draw();
+    }
+
+    public void draw() {
+        setText(model.toString());
+        switch (model.getCurrentState()) {
+            case enabled:
+                setEnabled(true);
+                setBackground(null);
+                return;
+            case disabled:
+                setEnabled(false);
+                setBackground(null);
+                return;
+            case selectedSource:
+                System.out.println("setting a selected cell");
+                setEnabled(false);
+                setBackground(Color.BLUE);
+                setOpaque(true);
+                return;
+        }
     }
 }
