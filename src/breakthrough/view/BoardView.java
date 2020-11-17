@@ -5,21 +5,21 @@ import breakthrough.model.Board;
 import javax.swing.*;
 import java.awt.*;
 
-public class BoardGUI extends JPanel {
+public class BoardView extends JPanel {
 
-    private CellGUI[][] buttons;
+    private CellView[][] buttons;
 
-    public BoardGUI(Board board) {
+    public BoardView(Board board) {
         super();
         int size = board.getSize();
-        buttons = new CellGUI[size][size];
+        buttons = new CellView[size][size];
 
         GridLayout gridLayout = new GridLayout(size, size);
         setLayout(gridLayout);
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                CellGUI button = new CellGUI(board.getCells()[i][j]);
+                CellView button = new CellView(board.getCells()[i][j]);
                 buttons[i][j] = button;
                 add(button);
             }
@@ -27,7 +27,7 @@ public class BoardGUI extends JPanel {
 
     }
 
-    public CellGUI[][] getButtons() {
+    public CellView[][] getButtons() {
         return buttons;
     }
 

@@ -25,7 +25,7 @@ public class BreakthroughGUI implements PropertyChangeListener {
     // =================================================================================================================
 
     JFrame window = new GameWindow();
-    BoardGUI boardGUI = new BoardGUI(board);
+    BoardView boardView = new BoardView(board);
     GameMenu menu = new GameMenu();
 
     // =================================================================================================================
@@ -53,7 +53,7 @@ public class BreakthroughGUI implements PropertyChangeListener {
     }
 
     private void connectCellButtons() {
-        CellGUI[][] cellButtons = boardGUI.getButtons();
+        CellView[][] cellButtons = boardView.getButtons();
         for (int i = 0; i < cellButtons.length; i++) {
             for (int j = 0; j < cellButtons[i].length; j++) {
                 cellButtons[i][j].addActionListener(new ButtonListener(i, j));
@@ -68,15 +68,15 @@ public class BreakthroughGUI implements PropertyChangeListener {
     private void newGame(int size) {
         clearGUI();
         board = new Board(size);
-        boardGUI = new BoardGUI(board);
-        window.add(boardGUI);
+        boardView = new BoardView(board);
+        window.add(boardView);
         connectCellButtons();
         window.pack();
         board.addPropertyChangeListener(this);
     }
 
     private void clearGUI() {
-        window.getContentPane().remove(boardGUI);
+        window.getContentPane().remove(boardView);
     }
 
     @Override

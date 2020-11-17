@@ -7,11 +7,11 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class CellGUI extends JButton implements PropertyChangeListener {
+public class CellView extends JButton implements PropertyChangeListener {
 
     private Cell model;
 
-    public CellGUI(Cell cell) {
+    public CellView(Cell cell) {
         super();
 
         model = cell;
