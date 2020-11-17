@@ -6,6 +6,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+/**
+ * Model representation of the board.
+ */
 public class Board {
 
     /**
