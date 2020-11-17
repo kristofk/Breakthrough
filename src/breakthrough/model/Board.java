@@ -1,26 +1,51 @@
 package breakthrough.model;
 
-import javax.print.DocFlavor;
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Board {
 
+    /**
+     * The property that keeps track of the changes and listeners.
+     */
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+
+    /**
+     * The size of the square board.
+     */
     private int size;
+
+    /**
+     * The cells on the board.
+     */
     private Cell[][] cells;
+
+    /**
+     * The state of the board.
+     */
     private BoardState state = BoardState.xSelectSource;
+
+    /**
+     * The cell that is marked as the source of the move.
+     */
     private Cell selectedCell;
+
+    /**
+     * Property to keep track whether the game is over.
+     */
     boolean gameOver = false;
 
     // =================================================================================================================
     // Constructors
     // =================================================================================================================
 
+    /**
+     * Constructor for `Board`.
+     * @param size The size of the board to construct.
+     */
     public Board(int size) {
         this.size = size;
         cells = new Cell[size][size];
@@ -28,6 +53,9 @@ public class Board {
         setState(BoardState.xSelectSource);
     }
 
+    /**
+     * Loads the initial empty board.
+     */
     private void loadDefaultSetup() {
         fillLine(0, CellOccupancy.o);
         fillLine(1, CellOccupancy.o);
@@ -38,6 +66,11 @@ public class Board {
         }
     }
 
+    /**
+     * Fills all data points in the specified line with the specified data.
+     * @param lineIndex The line to fill.
+     * @param occupancy The data to fill the line with.
+     */
     private void fillLine(int lineIndex, CellOccupancy occupancy) {
         for (int i = 0; i < size; i++) {
             Point coords = new Point(lineIndex, i);
@@ -49,6 +82,9 @@ public class Board {
     // Methods - Board updates
     // =================================================================================================================
 
+    /**
+     * Make the cellState enabled for every cell from where X can initiate a move.
+     */
     private void enablePossibleXSources() {
         for (Cell[] row : cells) {
             for (Cell cell : row) {
@@ -59,6 +95,9 @@ public class Board {
         }
     }
 
+    /**
+     * Make the cellState enabled for every cell from where O can initiate a move.
+     */
     private void enablePossibleOSources() {
         for (Cell[] row : cells) {
             for (Cell cell : row) {
@@ -69,6 +108,9 @@ public class Board {
         }
     }
 
+    /**
+     * Make the cellState enabled for every cell to where the player can move from the selectedSource.
+     */
     private void enablePossibleDestinations() {
         disableAll(false);
         ArrayList<Cell> possibleDestinations = possibleDestinationsFor(selectedCell);
@@ -77,6 +119,11 @@ public class Board {
         }
     }
 
+    /**
+     * Move the selected piece at the source to the destination.
+     * @param source The piece to move.
+     * @param destination The location where the piece will move to.
+     */
     private void move(Point source, Point destination) {
         Cell sourceCell = cells[source.x][source.y];
         Cell destinationCell = cells[destination.x][destination.y];
@@ -84,11 +131,18 @@ public class Board {
         sourceCell.setOccupancy(CellOccupancy.empty);
     }
 
+    /**
+     * Properly clear the selectedCell property.
+     */
     private void clearSelection() {
         selectedCell.setCurrentState(CellState.disabled);
         selectedCell = null;
     }
 
+    /**
+     * Disable all enabled cells.
+     * @param disableSelected If true then the selected cell will also be disabled, otherwise it will stay.
+     */
     private void disableAll(boolean disableSelected) {
         for (Cell[] row : cells) {
             for (Cell cell : row) {
@@ -105,8 +159,10 @@ public class Board {
     // Methods - Helpers
     // =================================================================================================================
 
-//    JOptionPane.showMessageDialog(null, "hello");
-
+    /**
+     * Changes the state property and updates the cells accordingly.
+     * @param newState The new value of the state property.
+     */
     private void setState(BoardState newState) {
         state = newState;
         switch (state) {
@@ -122,6 +178,11 @@ public class Board {
         }
     }
 
+    /**
+     * Find all the possible destinations where the piece can move to.
+     * @param sourceCell The piece to move.
+     * @return All possible destinations where the piece can move.
+     */
     private ArrayList<Cell> possibleDestinationsFor(Cell sourceCell) {
         ArrayList<Cell> possibleDestinations = new ArrayList<>();
 
@@ -152,6 +213,9 @@ public class Board {
         return possibleDestinations;
     }
 
+    /**
+     * Detects and handles the end of the game.
+     */
     private void checkGameOver() {
         if (didXWin()) {
             JOptionPane.showMessageDialog(null, "X won!");
@@ -162,6 +226,10 @@ public class Board {
         }
     }
 
+    /**
+     * Checks if X won the game.
+     * @return Boolean whether X won the game.
+     */
     private boolean didXWin() {
         Cell[] topRow = cells[0];
         for (Cell cell : topRow) {
@@ -171,6 +239,10 @@ public class Board {
         return false;
     }
 
+    /**
+     * Checks if O won the game.
+     * @return Boolean whether O won the game.
+     */
     private boolean didOWin() {
         Cell[] topRow = cells[size - 1];
         for (Cell cell : topRow) {
@@ -184,20 +256,37 @@ public class Board {
     // Getters & setters
     // =================================================================================================================
 
+    /**
+     *
+     * @return Value of the size property.
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     *
+     * @return Value of the cells property.
+     */
     public Cell[][] getCells() {
         return cells;
     }
 
+    /**
+     * Sets the gameOver property to the specified value.
+     * @param gameOver New value of the gameOver property.
+     */
     public void setGameOver(boolean gameOver) {
         boolean oldValue = this.gameOver;
         this.gameOver = gameOver;
         changes.firePropertyChange("gameOver", oldValue, gameOver);
     }
 
+    /**
+     * Signal which cell has been selected on the UI.
+     * @param row The row part of the coordinate.
+     * @param column The columns part of the coordinate.
+     */
     public void cellSelectedAt(int row, int column) {
         Cell selection = cells[row][column];
         switch (state) {
@@ -230,6 +319,10 @@ public class Board {
     // Overrides
     // =================================================================================================================
 
+    /**
+     *
+     * @return String representation of the Boar class.
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -246,10 +339,18 @@ public class Board {
     // Property listeners
     // =================================================================================================================
 
+    /**
+     * Add the class to the listeners to listen for changes in teh Board class.
+     * @param l The class that wants to listen.
+     */
     public void addPropertyChangeListener(PropertyChangeListener l) {
         changes.addPropertyChangeListener(l);
     }
 
+    /**
+     * Removes the specified class from the listeners.
+     * @param l The class to remove.
+     */
     public void removePropertyChangeListener(PropertyChangeListener l) {
         changes.removePropertyChangeListener(l);
     }
