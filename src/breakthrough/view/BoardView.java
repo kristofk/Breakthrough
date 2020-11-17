@@ -5,10 +5,20 @@ import breakthrough.model.Board;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Graphical representation of the Board.
+ */
 public class BoardView extends JPanel {
 
+    /**
+     * Cells on the board.
+     */
     private CellView[][] buttons;
 
+    /**
+     * Constructor of the BoardView class.
+     * @param board The board to represent.
+     */
     public BoardView(Board board) {
         super();
         int size = board.getSize();
@@ -27,6 +37,10 @@ public class BoardView extends JPanel {
 
     }
 
+    /**
+     *
+     * @return Cells on the board.
+     */
     public CellView[][] getButtons() {
         return buttons;
     }

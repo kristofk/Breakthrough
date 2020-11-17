@@ -7,10 +7,20 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Visual representation of the Cell.
+ */
 public class CellView extends JButton implements PropertyChangeListener {
 
+    /**
+     * The model to represent.
+     */
     private Cell model;
 
+    /**
+     * Constructor for the CellView class.
+     * @param cell The model to represent.
+     */
     public CellView(Cell cell) {
         super();
 
@@ -24,7 +34,10 @@ public class CellView extends JButton implements PropertyChangeListener {
         draw();
     }
 
-    public void draw() {
+    /**
+     * Draws the visuals based on the model.
+     */
+    private void draw() {
         setText(model.toString());
         switch (model.getCurrentState()) {
             case enabled:
@@ -43,6 +56,10 @@ public class CellView extends JButton implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Handles changes to the model.
+     * @param evt Representation of the event.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         draw();
